@@ -23,6 +23,7 @@ services:
     networks:
       - net
     environment:
+      # proxy our own metrics as an example
       PROMETHEUS_PROXY_CONFIG: |
         {
             "apps": [
@@ -30,12 +31,7 @@ services:
                     "job_name": "prometheus-proxy",
                     "dns_sd_configs": [
                         {
-                            "names": ["prometheus-proxy"],
-                            "type": "A",
-                            "port": "4000"
-                        },
-                        {
-                            "names": ["prometheus-proxy.local"],
+                            "names": ["tasks.prometheus-proxy"],
                             "type": "A",
                             "port": "4000"
                         }
