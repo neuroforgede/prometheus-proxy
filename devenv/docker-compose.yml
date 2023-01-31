@@ -4,8 +4,8 @@ services:
 
   prometheus-proxy:
     build:
-      context: ../
-      dockerfile: devenv/Dockerfile-dev
+      context: ../prometheus-proxy
+      dockerfile: Dockerfile-dev
       args:
         - CONTAINER_USER_ID=${CONTAINER_USER_ID}
         - CONTAINER_GROUP_ID=${CONTAINER_GROUP_ID}
