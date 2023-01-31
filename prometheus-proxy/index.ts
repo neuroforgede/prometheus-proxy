@@ -56,7 +56,7 @@ if(process.env.PROMETHEUS_PROXY_CONFIG_FILE) {
 }
 config = JSON.parse(configContent);
 
-app.get('/', async (req, res) => {
+app.get('/metrics', async (req, res) => {
     try {
         res.setHeader('Content-Type', 'text/plain; version=0.0.4; charset=utf-8');
         res.status(200);
