@@ -23,13 +23,7 @@ services:
     networks:
       - net
     environment:
-      - DOCKER_HOSTNAME={{.Node.Hostname}}
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    deploy:
-      mode: global
-      # this scrapes the proxies own internal metrics as a demo
-      labels: |
+      PROMETHEUS_PROXY_CONFIG: |
         {
             "apps": [
                 {
@@ -50,6 +44,10 @@ services:
                 }
             ]
         }
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    deploy:
+      mode: global
       resources:
         limits:
           memory: 256M
