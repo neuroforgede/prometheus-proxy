@@ -1,0 +1,7 @@
+node_modules
+config.js
+*.js
+*.js.map
+!config.template.js
+!migrations/**
+*.tsbuildinfo

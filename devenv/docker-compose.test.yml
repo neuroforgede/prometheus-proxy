@@ -1,0 +1,22 @@
+version: '2.4'
+
+services:
+
+  prometheus-proxy:
+    build:
+      context: ../prometheus-proxy
+      dockerfile: docker/Dockerfile-dev
+      args:
+        - CONTAINER_USER_ID=${CONTAINER_USER_ID}
+        - CONTAINER_GROUP_ID=${CONTAINER_GROUP_ID}
+    volumes:
+      - ../prometheus-proxy:/opt/node_app/app
+    networks:
+      prometheus-proxy:
+        aliases:
+          - prometheus-proxy.local
+    restart: unless-stopped
+
+networks:
+  prometheus-proxy:
+    driver: bridge

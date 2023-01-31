@@ -1,0 +1,24 @@
+FROM node:16 AS base
+
+# Install tools, create Node-RED app and data dir, add user and set rights
+RUN set -ex && \
+    apt-get update && apt-get install -y \
+        bash \
+        tzdata \
+        curl \
+        nano \
+        wget \
+        openssl
+
+ARG CONTAINER_USER_ID
+ARG CONTAINER_GROUP_ID
+
+RUN groupadd -g ${CONTAINER_GROUP_ID} devenv || echo "group with id ${CONTAINER_GROUP_ID} already exists, ignoring..."
+RUN useradd --uid ${CONTAINER_USER_ID} -m devenv -g ${CONTAINER_GROUP_ID} || echo "user with id ${CONTAINER_USER_ID} already exists, ignoring..."
+
+USER ${CONTAINER_USER_ID}
+
+# Set work directory
+WORKDIR /opt/node_app/app
+
+CMD ["tail", "-f", "/dev/null"]
