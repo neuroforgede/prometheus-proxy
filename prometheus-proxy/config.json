@@ -1,0 +1,20 @@
+{
+    "apps": [
+        {
+            "job_name": "prometheus-proxy",
+            "dns_sd_configs": [
+                {
+                    "names": ["prometheus-proxy"],
+                    "type": "A",
+                    "port": "3000"
+                },
+                {
+                    "names": ["prometheus-proxy.local"],
+                    "type": "A",
+                    "port": "3000"
+                }
+            ],
+            "metrics_path": "/metrics"
+        }
+    ]
+}
