@@ -44,10 +44,9 @@ services:
                 }
             ]
         }
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
     deploy:
-      mode: global
+      mode: replicated
+      replicas: 1
       resources:
         limits:
           memory: 256M
