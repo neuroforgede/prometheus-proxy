@@ -24,9 +24,6 @@ services:
       - net
     environment:
       # proxy our own metrics as an example
-      # use proxy_group "default", if the job_name
-      # is unique enough. If not, you can specify 
-      # e.g. the stack name in here
       PROMETHEUS_PROXY_CONFIG: |
         {
             "apps": [
@@ -42,7 +39,7 @@ services:
                     "metrics_path": "/metrics"
                 }
             ],
-            "proxy_group": "default"
+            "proxy_group": "{{index .Service.Labels "com.docker.stack.namespace"}}"
         }
     deploy:
       mode: replicated
