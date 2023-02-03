@@ -19,7 +19,7 @@ version: "3.8"
 
 services:
   prometheus-proxy:
-    image: ghcr.io/neuroforgede/prometheus-proxy:0.1.0
+    image: ghcr.io/neuroforgede/prometheus-proxy:0.2.0
     networks:
       - net
     environment:
