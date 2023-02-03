@@ -16,7 +16,7 @@ collectDefaultMetrics({ register: metricsRegistry });
 const fetchErrors = new client.Counter({
     name: 'prometheus_proxy_fetch_errors',
     help: 'Error count',
-    labelNames: ['proxy_error_instance', 'proxy_error_job']
+    labelNames: ['proxy_group', 'proxy_error_instance', 'proxy_error_job']
 });
 metricsRegistry.registerMetric(fetchErrors);
 
@@ -44,7 +44,8 @@ type Config = {
             port: string | number
         }[],
         metrics_path?: string
-    }[]
+    }[],
+    proxy_group: string | null
 };
 
 let config: Config;
@@ -62,6 +63,8 @@ app.get('/metrics', async (req, res) => {
         res.status(200);
 
         const promises: Promise<string>[] = [];
+
+        const proxy_group = config.proxy_group || 'default';
 
         for (const app of config.apps) {
             try {
@@ -85,12 +88,13 @@ app.get('/metrics', async (req, res) => {
                             const response: string = remoteMetrics.data;
     
                             const augmented =
-                                response.replace(regexWithLabels, `$1{proxy_instance="${instance}",proxy_job="${app.job_name}",$2} $3`)
-                                    .replace(regexWithoutLabels, `$1{proxy_instance="${instance}",proxy_job="${app.job_name}"} $2`);
+                                response.replace(regexWithLabels, `$1{proxy_instance="${instance}",proxy_job="${app.job_name}",proxy_group="${proxy_group}",$2} $3`)
+                                    .replace(regexWithoutLabels, `$1{proxy_instance="${instance}",proxy_job="${app.job_name}",proxy_group="${proxy_group}"} $2`);
                             return augmented;
                         } catch (error) {
                             console.error(JSON.stringify(error));
                             fetchErrors.labels({
+                                proxy_group: proxy_group,
                                 proxy_error_job: app.job_name,
                                 proxy_error_instance: instance
                             }).inc();
@@ -101,6 +105,7 @@ app.get('/metrics', async (req, res) => {
             } catch (error) {
                 console.error(JSON.stringify(error));
                 fetchErrors.labels({
+                    proxy_group: proxy_group,
                     proxy_error_job: app.job_name
                 }).inc();
             }
