@@ -1,6 +1,6 @@
 # if you're doing anything beyond your local machine, please pin this to a specific version at https://hub.docker.com/_/node/
-# FROM node:14-alpine also works here for a smaller image
-FROM node:16-slim
+# FROM node:18-alpine also works here for a smaller image
+FROM node:18-slim
 
 RUN apt-get update && apt-get upgrade -y
 
